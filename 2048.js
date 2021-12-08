@@ -2,10 +2,14 @@ const Tab = document.getElementById("Main");
 const TextTaille = document.getElementById("taille");
 const StartBtn = document.getElementById("StartBTN");
 const TestAddBtn = document.getElementById("testAddBTN");
+const nbtourTXT = document.getElementById("nbTourTXT");
+const scoreTXT = document.getElementById("scoreTXT");
+
 const TC=50//taille d'une cellule
 let ActualTab;
 let nbtour=0;
-const nbtourTXT = document.getElementById("nbTourTXT");
+let score=0;
+
 
 
 
@@ -35,6 +39,7 @@ function updateTab(TabARecop,Taille){
 		Tab.appendChild(Row)
 	}
 	nbtourTXT.innerText=nbtour;
+	scoreTXT.innerText=score
 }
 
 
@@ -136,12 +141,13 @@ function findepartie(tab){
 		let moveposs=movepossible(tab)
 		console.log("on est plein donc on teste si ya un move possible : "+ moveposs)
 		if(!moveposs){
-			alert("fin de partie");
+			let replay = confirm("voulez vous recommencer ?");
+			if(replay) start();
 		}
 	}
 }
 
-function start() {
+function initTab() {
 	const N = TextTaille.value;
 	let TabStart=createEmptyTab(N)
 	let debCol1= getRandomInt(N);
@@ -155,9 +161,7 @@ function start() {
 	return TabStart;
 }
 
-function depassement(x,y,taille){
-	return x==-1 || y==-1 || x==taille || y==taille;
-}
+
 
 function tabMoveUp(ActuTab){
 	let N=ActuTab.length;
@@ -180,6 +184,7 @@ function tabMoveUp(ActuTab){
 						move++
 						console.log("on multiplie par 2 car "+newtab[i-move][j]+" = "+CasePresent)
 						newtab[i-move][j]*=2;
+						score+=newtab[i-move][j];
 					}else{
 						console.log("on remplace "+newtab[i-move][j]+" d'indice "+i+"-"+move+"="+(i-move)+" col="+j+" par "+CasePresent)
 						newtab[i-(move)][j]=CasePresent
@@ -189,7 +194,7 @@ function tabMoveUp(ActuTab){
 					newtab[i-(move)][j]=CasePresent
 				}
 				
-				console.log("on a fait "+move);
+				//console.log("on a fait "+move);
 
 				if(move>0) {
 					newtab[i][j]=0;
@@ -219,8 +224,9 @@ function tabMoveUp(ActuTab){
 			}
 		}
 	}
+	//console.log("on a fait "+movetot+" moves!")
 	if(movetot!=0) newtab=addToEmpty(newtab);
-	return newtab
+	return newtab,movetot;
 }
 
 function tabMoveLeft(ActuTab){
@@ -244,6 +250,7 @@ function tabMoveLeft(ActuTab){
 						move++
 						console.log("on multiplie par 2 car "+newtab[i][j-move]+" = "+CasePresent)
 						newtab[i][j-move]*=2;
+						score+=newtab[i][j-move];
 					}else{
 						//console.log("on remplace "+newtab[i][j-move]+" d'indice "+i+"-"+move+"="+(i-move)+" col="+j+" par "+CasePresent)
 						newtab[i][j-move]=CasePresent
@@ -253,7 +260,7 @@ function tabMoveLeft(ActuTab){
 					newtab[i][j-move]=CasePresent
 				}
 				
-				console.log("on a fait "+move);
+				//console.log("on a fait "+move);
 
 				if(move>0) {
 					newtab[i][j]=0;
@@ -264,8 +271,9 @@ function tabMoveLeft(ActuTab){
 			}
 		}
 	}
+	//console.log("on a fait "+movetot+" moves!")
 	if(movetot!=0) newtab=addToEmpty(newtab);
-	return newtab
+	return newtab,movetot
 }
 
 
@@ -290,6 +298,7 @@ function tabMoveRight(ActuTab){
 						move++
 						console.log("on multiplie par 2 car "+newtab[i][j+move]+" = "+CasePresent)
 						newtab[i][j+move]*=2;
+						score+=newtab[i][j+move];
 					}else{
 						//console.log("on remplace "+newtab[i][j-move]+" d'indice "+i+"-"+move+"="+(i-move)+" col="+j+" par "+CasePresent)
 						newtab[i][j+move]=CasePresent
@@ -299,7 +308,6 @@ function tabMoveRight(ActuTab){
 					newtab[i][j+move]=CasePresent
 				}
 				
-				console.log("on a fait "+move);
 
 				if(move>0) {
 					newtab[i][j]=0;
@@ -310,8 +318,9 @@ function tabMoveRight(ActuTab){
 			}
 		}
 	}
+	//console.log("on a fait "+movetot+" moves!")
 	if(movetot!=0) newtab=addToEmpty(newtab);
-	return newtab
+	return newtab,movetot
 }
 
 function tabMoveDown(ActuTab){
@@ -335,6 +344,7 @@ function tabMoveDown(ActuTab){
 						move++
 						console.log("on multiplie par 2 car "+newtab[i+move][j]+" = "+CasePresent)
 						newtab[i+move][j]*=2;
+						score+=newtab[i+move][j];
 					}else{
 						//console.log("on remplace "+newtab[i][j-move]+" d'indice "+i+"-"+move+"="+(i-move)+" col="+j+" par "+CasePresent)
 						newtab[i+move][j]=CasePresent
@@ -344,7 +354,7 @@ function tabMoveDown(ActuTab){
 					newtab[i+move][j]=CasePresent
 				}
 				
-				console.log("on a fait "+move);
+				//console.log("on a fait "+move);
 
 				if(move>0) {
 					newtab[i][j]=0;
@@ -355,11 +365,9 @@ function tabMoveDown(ActuTab){
 			}
 		}
 	}
-	if(movetot!=0){
-		newtab=addToEmpty(newtab);
-		nbtour++
-		updateTab(newtab,newtab.length)
-	}
+	//console.log("on a fait "+movetot+" moves!")
+	if(movetot!=0) newtab=addToEmpty(newtab);
+	return newtab,movetot
 }
 
 
@@ -439,35 +447,39 @@ function keyDownHandler(event) {
     switch (event.keyCode) {
   		case 39: //direction="right";
   			console.log("on part a droite")
-  			newtab=tabMoveRight(ActualTab)
+  			newtab,moves=tabMoveRight(ActualTab)
     		break;
   		case 37: //direction="left";
-    		newtab=tabMoveLeft(ActualTab);
+    		newtab,moves=tabMoveLeft(ActualTab);
     		console.log("on part a gauche")
     		break;
   		case 40://direction="down";
-  			newtab=tabMoveDown(ActualTab)
+  			newtab,moves=tabMoveDown(ActualTab)
   			console.log("on part en bas")
   			break;
   		case 38://direction="up";
-  			newtab=tabMoveUp(ActualTab);
+  			newtab,moves=tabMoveUp(ActualTab);
   			console.log("on part en haut")
   			break;
-  		default:
-  			jouer=false
 	}
 	//console.log(direction)
-    if (jouer){
+	//console.log("FIN DE TOUR !!\non a fait "+moves+" moves!")
+    if (moves!=0){
+    	nbtour++
+    	updateTab(newtab,newtab.length)
     	findepartie(newtab)
     }
     return newtab;
 }
 
-StartBtn.addEventListener("click",function(){
-	ActualTab=start();
-	nbtour++
+function start(){
+	nbtour=0
+	score=0
+	ActualTab=initTab();
     console.log(ActualTab)
-})	
+}
+
+StartBtn.addEventListener("click",start)	
 
 document.body.addEventListener("keydown",function(event){
 	ActualTab=keyDownHandler(event);
