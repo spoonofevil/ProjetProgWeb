@@ -4,18 +4,26 @@
 	<title>2048</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<script type="text/javascript" src="2048.js" defer></script>
+	<link rel="stylesheet" href="2048style.css">
 </head>
-<body>
-	<a>taille du carré : <input type="text" id="taille"></a>
-	<button id="StartBTN">Start</button>
-	<button id="testAddBTN">Add</button>
-	<br>
-	<a>tour : <a id=nbTourTXT>0</a></a>
-	<br>
-	<a>score : <a id=scoreTXT>0</a></a>
-	<br>
-	<table id="Main">
+	<body>
+		<div class="hud">
+			<a class="Taille">taille du carré : <input type="number" id="taille" value="4" max="10" min="2"></a><!-- a changer ppour adapter la taille au nombre du tab-->
+			<br><button id="StartBTN" class="StartButton">Start</button>
+		</div>
+		<!--<br><button id="testAddBTN">Add</button>-->
 		
-	</table>
-</body>
+		<table id="Main">
+			
+		</table>
+
+		<div class="score">
+		<br>
+		<a>tour : <a id=nbTourTXT>0</a></a>
+		<br>
+		<a>score : <a id=scoreTXT>0</a></a>
+		<br>
+		</div>
+
+	</body>
 </html>

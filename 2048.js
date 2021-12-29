@@ -1,7 +1,7 @@
 const Tab = document.getElementById("Main");
 const TextTaille = document.getElementById("taille");
 const StartBtn = document.getElementById("StartBTN");
-const TestAddBtn = document.getElementById("testAddBTN");
+//const TestAddBtn = document.getElementById("testAddBTN");
 const nbtourTXT = document.getElementById("nbTourTXT");
 const scoreTXT = document.getElementById("scoreTXT");
 
@@ -19,16 +19,16 @@ function getRandomInt(max) {
 }
 
 
-function updateTab(TabARecop,Taille){
-	N=Taille
+function updateTab(TabARecop){
+	N=TabARecop.length;
 	Tab.innerText="";
 	for(i=0;i<N;i++){
 		const Row=document.createElement("TR");
 		for(j=0;j<N;j++){
 			const Cell=document.createElement("TD");
-			Cell.style.backgroundColor='grey';
+			/*Cell.style.backgroundColor='grey';
 			Cell.setAttribute("width",TC);
-			Cell.setAttribute("height",TC);//a changer avec setAttribute("id",cellule);
+			Cell.setAttribute("height",TC);//a changer avec setAttribute("id",cellule);*/
 			if(TabARecop[i][j]!=0){
 				Cell.innerText=TabARecop[i][j];
 				//console.log(TabARecop[i][j])
@@ -54,6 +54,8 @@ function createEmptyTab(Taille){
 	return tab
 }
 
+ActualTab=createEmptyTab(TextTaille.value)
+updateTab(ActualTab)
 
 function get2or4(){
 	const tirage=getRandomInt(3)
@@ -156,7 +158,7 @@ function initTab() {
 	let debLin2= getRandomInt(N);
 	TabStart[debLin1][debCol1]=get2or4()
 	TabStart[debLin2][debCol2]=get2or4()
-	updateTab(TabStart,N)
+	updateTab(TabStart)
 	//console.log(TabStart)
 	return TabStart;
 }
@@ -372,7 +374,6 @@ function tabMoveDown(ActuTab){
 
 
 /*
-
 function TabMove(ActuTab,dir){
 	let l=0
 	let r=0
@@ -443,7 +444,6 @@ function TabMove(ActuTab,dir){
 
 function keyDownHandler(event) {
 	let newtab=Array.from(ActualTab)
-	let jouer=true
     switch (event.keyCode) {
   		case 39: //direction="right";
   			console.log("on part a droite")
@@ -461,12 +461,14 @@ function keyDownHandler(event) {
   			newtab,moves=tabMoveUp(ActualTab);
   			console.log("on part en haut")
   			break;
+  		default:
+  			moves=0;
 	}
 	//console.log(direction)
 	//console.log("FIN DE TOUR !!\non a fait "+moves+" moves!")
     if (moves!=0){
     	nbtour++
-    	updateTab(newtab,newtab.length)
+    	updateTab(newtab)
     	findepartie(newtab)
     }
     return newtab;
@@ -475,11 +477,16 @@ function keyDownHandler(event) {
 function start(){
 	nbtour=0
 	score=0
-	ActualTab=initTab();
-    console.log(ActualTab)
+	let newTab=initTab();
+	//console.log("on commence la partie :")
+    console.log(newTab);
+    return newTab;
 }
 
-StartBtn.addEventListener("click",start)	
+
+StartBtn.addEventListener("click",function(){
+	ActualTab=start();
+})	
 
 document.body.addEventListener("keydown",function(event){
 	ActualTab=keyDownHandler(event);
