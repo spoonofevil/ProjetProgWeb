@@ -1,0 +1,16 @@
+* U:\Windows\Bureau\chti assembleur\spice\PWM.asc
+V1 Compteur 0 PULSE(0 3.3 0 5u 0 0 5u)
+C1 Filtre 0 10n
+R1 Filtre PWM 3.9k
+V2 CompValue 0 SINE(1.65 1 2k)
+B1 PWM 0 V=if(V(CompValue)>V(Compteur),3.3,0)
+;ac dec 100 1 10meg
+.tran 0 1.5m 0 0.01u
+* Compteur de l'unité Timer
+* Partie PWM de l'unité Timer
+* TIMER3
+* PB0
+* Chanel 3
+* STM32F103
+.backanno
+.end
